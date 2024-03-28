@@ -1,0 +1,78 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block title %}Copyright by den4ik{% endblock %}
+
+{% block content %}
+<nav>
+    <a href="">Вернуться назад</a>
+</nav>
+<div class="features">
+    <h3>
+        Попробуй угадать, по какому произведению ИИ сделала картинку
+    </h3>
+    <form method="post">
+        {% csrf_token %}
+        <img src="{% static 'main/img/Ivan.jpg' %}" alt="Acho">
+            <ul id="id_question1" name="question1">
+            {% for value, text in form.question1.field.choices %}
+                {% if value != '' %}
+              <li>
+                  <input class="form-check-input" type="radio" id="id_question1_{{ forloop.counter0 }}" name="question1" value="{{ value }}">
+                  <label class="form-check-label" for="id_question1_{{ forloop.counter0 }}">{{ text }}</label>
+              </li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        <br>
+        <label for="id_question2"><img src="{% static 'main/img/War_and_peace.jpeg' %}" alt=""></label>
+        <ul id="id_question2" name="question2">
+            {% for value, text in form.question2.field.choices %}
+            {% if value != '' %}
+              <li>
+                  <input class="form-check-input" type="radio" id="id_question2_{{ forloop.counter0 }}" name="question2" value="{{ value }}"><label class="form-check-label" for="id_question2_{{ forloop.counter0 }}">{{ text }}</label>
+              </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <br>
+        <button type="submit" class="btn">Сохранить ответы</button>
+        <span>{{ error }}</span>
+    </form>
+</div>
+<button id="scrollToTopBtn"><img class="arrow" src="{% static 'main/img/up-arrow.png' %}"></button>
+<script>
+    // Сохраняем текущую позицию скролла в куки
+    document.addEventListener('submit', function(event) {
+    document.cookie = 'scrollPosition=' + window.scrollY;
+});
+
+// Восстанавливаем позицию скролла после обновления страницы
+    window.onload = function() {
+    var scrollPosition = document.cookie.replace(/(?:(?:^|.*;\s*)scrollPosition\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    if (scrollPosition) {
+        window.scrollTo(0, parseInt(scrollPosition));
+    }
+};
+
+    // Получаем кнопку "Наверх"
+var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+// Показываем или скрываем кнопку в зависимости от позиции скролла
+window.onscroll = function() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        scrollToTopBtn.style.display = "block";
+    } else {
+        scrollToTopBtn.style.display = "none";
+    }
+};
+
+// Прокручиваем страницу вверх при нажатии на кнопку
+scrollToTopBtn.onclick = function() {
+    document.body.scrollTop = 0; // Для Safari
+    document.documentElement.scrollTop = 0; // Для других браузеров
+};
+
+</script>
+{% endblock %}
+
