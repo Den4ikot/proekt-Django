@@ -5,13 +5,13 @@
 
 {% block content %}
 <nav>
-    <a href="">Вернуться назад</a>
+    <a href="http://school552.spb.ru/">Вернуться назад</a>
 </nav>
 <div class="features">
     <h3>
         Попробуй угадать, по какому произведению ИИ сделала картинку
     </h3>
-    <form method="post">
+    <form method="post" id="myForm">
         {% csrf_token %}
         <img src="{% static 'main/img/Ivan.jpg' %}" alt="Acho">
             <ul id="id_question1" name="question1">
@@ -25,7 +25,7 @@
             {% endfor %}
             </ul>
         <br>
-        <label for="id_question2"><img src="{% static 'main/img/War_and_peace.jpeg' %}" alt=""></label>
+        <img src="{% static 'main/img/War_and_peace.jpeg' %}" alt="">
         <ul id="id_question2" name="question2">
             {% for value, text in form.question2.field.choices %}
             {% if value != '' %}
@@ -36,13 +36,55 @@
             {% endfor %}
         </ul>
         <br>
-        <button type="submit" class="btn">Сохранить ответы</button>
+
         <span>{{ error }}</span>
     </form>
+    <button id="open"> Ответить</button>
+        <dialog id="myDialog">
+            <p>
+                Уверены, что готовы отправить?
+            </p>
+            <p>
+                <button type="submit" form="myForm" id="submit" class="btn">Отправить</button>
+                <button id="close">X</button>
+            </p>
+        </dialog>
+
 </div>
+
 <button id="scrollToTopBtn"><img class="arrow" src="{% static 'main/img/up-arrow.png' %}"></button>
+
+
+
+
 <script>
-    // Сохраняем текущую позицию скролла в куки
+
+    // selecting the dialog, form, and buttons
+  var dialog = document.querySelector('#myDialog');
+  var form = document.querySelector('#myForm');
+  var open = document.querySelector('#open');
+  var close = document.querySelector('#close');
+  var submit = document.querySelector('#submit');
+
+  // displaying the dialog box
+  open.onclick = function () {
+    dialog.showModal();
+  }
+
+  // hiding the dialog box
+  close.onclick = function () {
+    dialog.close();
+  }
+
+  // submitting the form
+  submit.onclick = function () {
+    console.log('Form submitted:', form.question1.value, form.question2.value);
+    dialog.close();
+  }
+
+
+
+// Сохраняем текущую позицию скролла в куки
     document.addEventListener('submit', function(event) {
     document.cookie = 'scrollPosition=' + window.scrollY;
 });
@@ -54,6 +96,7 @@
         window.scrollTo(0, parseInt(scrollPosition));
     }
 };
+
 
     // Получаем кнопку "Наверх"
 var scrollToTopBtn = document.getElementById("scrollToTopBtn");

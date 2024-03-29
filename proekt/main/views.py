@@ -1,21 +1,26 @@
 from django.shortcuts import render, redirect
-from .forms import ResponseForm
+from .forms import ResponseForm, Response
 
 
 def index(request):
-    error =''
+    error = ''
     if request.method == 'POST':
         form = ResponseForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+
         else:
             error = '*Есть пустые поля'
-
-    form = ResponseForm()
+    else:
+        form = ResponseForm()
 
     data = {
         'form': form,
-        'error': error
+        'error': error,
     }
+
     return render(request, 'main/index.html', data)
+
+
+def results(request):
+    return render(request, 'main/results.html')

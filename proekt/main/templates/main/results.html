@@ -1,0 +1,17 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block title %}Copyright by den4ik{% endblock %}
+
+{% block content %}
+<div class="res">
+    <h1 class="res">ОТВЕТЫ</h1>
+    <ol>
+        <li class="res">«Иван-царевич и Серый волк»</li>
+        <li class="res">«Война и мир»</li>
+    </ol>
+    <h1 class="res">
+        <a class="res" href="{% url 'home' %}">Вернуться Назад</a>
+    </h1>
+
+{% endblock %}
